@@ -1,11 +1,11 @@
 package org.pcass.simple_shopping_cart_api.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.pcass.simple_shopping_cart_api.model.ProductCreateRequest;
 import org.pcass.simple_shopping_cart_api.model.ProductDTO;
 import org.pcass.simple_shopping_cart_api.service.ProductService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,5 +19,12 @@ public class ProductController {
     @GetMapping("/")
     List<ProductDTO> getAllProducts(){
         return productService.getAllProducts();
+    }
+
+    @PostMapping("/")
+    @ResponseStatus(HttpStatus.CREATED)
+    ProductDTO createProduct(@RequestBody ProductCreateRequest request){
+        return productService.createProduct(request);
+
     }
 }
