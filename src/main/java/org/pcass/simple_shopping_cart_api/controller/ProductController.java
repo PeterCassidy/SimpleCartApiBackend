@@ -25,6 +25,17 @@ public class ProductController {
     @ResponseStatus(HttpStatus.CREATED)
     ProductDTO createProduct(@RequestBody ProductCreateRequest request){
         return productService.createProduct(request);
+    }
 
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    ProductDTO updateProduct(@PathVariable Long id, @RequestBody ProductCreateRequest request){
+        return productService.updateProduct(id, request);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    void deleteProduct(@PathVariable Long id){
+        productService.deleteProduct(id);
     }
 }

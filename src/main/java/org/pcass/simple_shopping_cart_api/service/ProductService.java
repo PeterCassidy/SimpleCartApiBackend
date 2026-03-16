@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.pcass.simple_shopping_cart_api.model.ProductCreateRequest;
 import org.pcass.simple_shopping_cart_api.model.ProductDTO;
 import org.pcass.simple_shopping_cart_api.model.ProductEntity;
+import org.pcass.simple_shopping_cart_api.model.ProductNotFoundException;
 import org.pcass.simple_shopping_cart_api.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +29,20 @@ public class ProductService {
                 productCreateRequest.getPrice()
         );
         return ProductDTO.fromEntity(productRepository.save(newProduct));
+    }
+
+    public ProductDTO updateProduct(Long id, ProductCreateRequest request){
+        ProductEntity updatedProduct = productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException("No product found for id: " + id));
+        updatedProduct.setName(request.getName());
+        updatedProduct.setPrice(request.getPrice());
+        return ProductDTO.fromEntity(productRepository.save(updatedProduct));
+    }
+
+    public void deleteProduct(Long id){
+        ProductEntity entityForDeletion= productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException("No product found for id: " + id));
+        productRepository.delete(entityForDeletion);
     }
 
 }
