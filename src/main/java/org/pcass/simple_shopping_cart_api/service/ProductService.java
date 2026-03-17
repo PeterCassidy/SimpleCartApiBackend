@@ -1,10 +1,12 @@
 package org.pcass.simple_shopping_cart_api.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.pcass.simple_shopping_cart_api.model.ProductCreateRequest;
 import org.pcass.simple_shopping_cart_api.model.ProductDTO;
 import org.pcass.simple_shopping_cart_api.model.ProductEntity;
 import org.pcass.simple_shopping_cart_api.model.ProductNotFoundException;
+import org.pcass.simple_shopping_cart_api.repository.OfferRepository;
 import org.pcass.simple_shopping_cart_api.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,7 @@ import java.util.List;
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final OfferRepository offerRepository;
 
     public List<ProductDTO> getAllProducts() {
         List<ProductEntity> productEntities = productRepository.findAll();
@@ -31,18 +34,28 @@ public class ProductService {
         return ProductDTO.fromEntity(productRepository.save(newProduct));
     }
 
+    @Transactional
     public ProductDTO updateProduct(Long id, ProductCreateRequest request){
+
         ProductEntity updatedProduct = productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException("No product found for id: " + id));
+
+        offerRepository.deleteAllByProductId(id);
+
         updatedProduct.setName(request.getName());
         updatedProduct.setPrice(request.getPrice());
         return ProductDTO.fromEntity(productRepository.save(updatedProduct));
     }
 
-    public void deleteProduct(Long id){
-        ProductEntity entityForDeletion= productRepository.findById(id)
-                .orElseThrow(() -> new ProductNotFoundException("No product found for id: " + id));
-        productRepository.delete(entityForDeletion);
+    @Transactional
+    public void deleteProduct(Long id) {
+
+        if (!productRepository.existsById(id)) {
+            throw new ProductNotFoundException("No product found for id: " + id);
+        }
+
+        offerRepository.deleteAllByProductId(id);
+        productRepository.deleteById(id);
     }
 
 }
