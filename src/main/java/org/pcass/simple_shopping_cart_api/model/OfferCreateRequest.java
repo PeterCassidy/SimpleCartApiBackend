@@ -2,6 +2,7 @@ package org.pcass.simple_shopping_cart_api.model;
 
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -14,6 +15,7 @@ public class OfferCreateRequest {
     private Long productId;
 
     @NotNull(message = "Product Quantity is required.")
+    @Min(value = 2, message = "Minimum quantity is 2")
     private Long productQuantity;
 
     @NotNull(message = "Offer price is required.")

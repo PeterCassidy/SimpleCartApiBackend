@@ -2,6 +2,7 @@ package org.pcass.simple_shopping_cart_api.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.JoinFormula;
 import org.pcass.simple_shopping_cart_api.model.ProductCreateRequest;
 import org.pcass.simple_shopping_cart_api.model.ProductDTO;
 import org.pcass.simple_shopping_cart_api.model.ProductEntity;
@@ -56,6 +57,18 @@ public class ProductService {
 
         offerRepository.deleteAllByProductId(id);
         productRepository.deleteById(id);
+    }
+
+    public Boolean productExistsById(Long id) {
+        return productRepository.existsById(id);
+    }
+
+    public ProductDTO getProductById(Long id) {
+
+        ProductEntity product = productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException("No product found for id: " + id));
+
+        return ProductDTO.fromEntity(product);
     }
 
 }

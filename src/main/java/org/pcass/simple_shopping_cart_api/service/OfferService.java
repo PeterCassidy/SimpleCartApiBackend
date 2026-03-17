@@ -24,8 +24,8 @@ public class OfferService {
     public OfferDTO createOffer(OfferCreateRequest offerCreateRequest) {
 
         Long offerProductId = offerCreateRequest.getProductId();
-        if(!productRepository.existsById(offerProductId)){
-            throw new ProductNotFoundException("Could not create offer, Product with id "+ offerProductId  + " not found.");
+        if (!productRepository.existsById(offerProductId)) {
+            throw new ProductNotFoundException("Could not create offer, Product with id " + offerProductId + " not found.");
         }
 
         OfferEntity newOffer = new OfferEntity(
@@ -40,8 +40,8 @@ public class OfferService {
     public OfferDTO updateOffer(Long id, OfferCreateRequest request) {
 
         Long offerProductId = request.getProductId();
-        if(!productRepository.existsById(offerProductId)){
-            throw new ProductNotFoundException("Could not update offer, Product with id "+ offerProductId  + " not found.");
+        if (!productRepository.existsById(offerProductId)) {
+            throw new ProductNotFoundException("Could not update offer, Product with id " + offerProductId + " not found.");
         }
 
         OfferEntity updatedOffer = offerRepository.findById(id)
@@ -61,5 +61,11 @@ public class OfferService {
         }
 
         offerRepository.deleteById(id);
+    }
+
+    public List<OfferDTO> getValidOffers() {
+        return offerRepository.findAllByOrderByProductIdAscProductQuantityDesc().stream()
+                .map(OfferDTO::fromEntity)
+                .toList();
     }
 }

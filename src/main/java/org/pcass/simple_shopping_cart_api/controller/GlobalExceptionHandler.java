@@ -1,5 +1,7 @@
 package org.pcass.simple_shopping_cart_api.controller;
 
+import org.pcass.simple_shopping_cart_api.model.InvalidCartException;
+import org.pcass.simple_shopping_cart_api.model.OfferNotFoundException;
 import org.pcass.simple_shopping_cart_api.model.ProductNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
@@ -28,9 +30,21 @@ public class GlobalExceptionHandler {
         return errors;
     }
 
+    @ExceptionHandler(InvalidCartException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    String invalidCart(InvalidCartException ex) {
+        return ex.getMessage();
+    }
+
+    @ExceptionHandler(OfferNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    String offerNotFound(OfferNotFoundException ex) {
+        return ex.getMessage();
+    }
+
     @ExceptionHandler(ProductNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String productNotFound(ProductNotFoundException ex){
+    String productNotFound(ProductNotFoundException ex) {
         return ex.getMessage();
     }
 }
