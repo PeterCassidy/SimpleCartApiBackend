@@ -1,5 +1,6 @@
 package org.pcass.simple_shopping_cart_api.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.pcass.simple_shopping_cart_api.model.ProductCreateRequest;
 import org.pcass.simple_shopping_cart_api.model.ProductDTO;
@@ -23,13 +24,13 @@ public class ProductController {
 
     @PostMapping("/")
     @ResponseStatus(HttpStatus.CREATED)
-    ProductDTO createProduct(@RequestBody ProductCreateRequest request){
+    ProductDTO createProduct(@Valid @RequestBody ProductCreateRequest request){
         return productService.createProduct(request);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    ProductDTO updateProduct(@PathVariable Long id, @RequestBody ProductCreateRequest request){
+    ProductDTO updateProduct(@PathVariable Long id, @Valid @RequestBody ProductCreateRequest request){
         return productService.updateProduct(id, request);
     }
 
