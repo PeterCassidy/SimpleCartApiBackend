@@ -57,6 +57,10 @@ public class CartService {
                 offer -> {
                     Long productId = offer.getProductId();
                     Long productsInList = aggregatedShoppingList.get(productId);
+                    if(productsInList == null){
+                        //if no offer products, break loop.
+                        return;
+                    }
                     long offerApplications = productsInList / offer.getProductQuantity();
                     ProductDTO product = productService.getProductById(productId);
                     //add each application of the offer to the receipt
