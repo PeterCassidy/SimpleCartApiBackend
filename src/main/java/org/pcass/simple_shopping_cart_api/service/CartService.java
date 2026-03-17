@@ -26,8 +26,6 @@ public class CartService {
                                 Collectors.counting()
                         ));
 
-        System.out.println(aggregatedShoppingList);
-
         //check products exist for each id, throw exception for missing products;
         Set<Long> missingProducts = aggregatedShoppingList.keySet().stream()
                 .filter(productId -> !productService.productExistsById(productId))
