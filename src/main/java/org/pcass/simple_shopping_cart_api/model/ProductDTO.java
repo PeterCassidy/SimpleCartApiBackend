@@ -12,10 +12,6 @@ public class ProductDTO {
     private String name;
     private BigDecimal price;
 
-    ProductEntity toEntity() {
-        return new ProductEntity(this.id, this.name, this.price);
-    }
-
     public static ProductDTO fromEntity(ProductEntity productEntity) {
         return new ProductDTO(productEntity.getId(), productEntity.getName(), productEntity.getPrice());
     }

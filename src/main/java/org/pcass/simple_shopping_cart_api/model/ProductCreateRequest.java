@@ -14,7 +14,7 @@ public class ProductCreateRequest {
     private String name;
     
     @NotNull
-    @DecimalMin(value = "0.0", inclusive = false, message = "Price must be greater than 0.0")
+    @DecimalMin(value = "0.0", inclusive = false, message = "Price must be greater than 0.00")
     @Digits(integer = 10, fraction = 2, message = "Price must have 2 decimal places")
     private BigDecimal price;
 }
